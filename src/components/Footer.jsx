@@ -10,40 +10,43 @@ const footerLinks = [
   { to: '/customer-support', label: 'Contact Us' },
 ];
 
+const listStyle = 'grid content-start gap-6 text-[2.3rem] font-medium leading-[1.1] max-nav:text-[1.6rem] [&_a]:transition-opacity [&_a:hover]:opacity-60';
+const navStyle = `${listStyle} [&_a]:text-muted [&_a.active]:text-white [&_a:hover]:text-white`;
+
 export default function Footer() {
   const backToTop = () => window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
 
   return (
-    <footer className="site-footer">
-      <div className="footer__content">
-        <div className="footer__top">
-          <nav aria-label="Footer navigation"><ul className="footer__list">
+    <footer className="site-footer relative isolate overflow-hidden">
+      <div className="flex flex-col gap-[min(13rem,13vh)] px-12 pt-[min(29.5rem,29.5vh)] pb-[min(4rem,4vh)] max-nav:pt-28 max-sm:gap-0 max-sm:px-0 max-sm:pt-[4.8rem] max-sm:pb-[2.8rem]">
+        <div className="grid grid-cols-[auto_auto_1fr_auto] gap-40 max-nav:grid-cols-2 max-nav:gap-16 max-sm:grid-cols-[1.4fr_1fr] max-sm:gap-x-8 max-sm:px-12">
+          <nav aria-label="Footer navigation"><ul className={navStyle}>
             {footerLinks.map(({ to, label }) => <li key={to}><NavLink to={to} end={to === '/'}>{label}</NavLink></li>)}
           </ul></nav>
-          <nav aria-label="Account navigation"><ul className="footer__list">
+          <nav aria-label="Account navigation"><ul className={navStyle}>
             <li><NavLink to="/login">Login</NavLink></li>
             <li><NavLink to="/register">Register</NavLink></li>
           </ul></nav>
-          <address className="footer__contact footer__list">
+          <address className={`${listStyle} max-w-152 justify-self-center not-italic max-nav:max-w-100 max-nav:justify-self-start max-sm:gap-4 [&_a]:wrap-anywhere`}>
             <a href={`mailto:${contact.email}`}>{contact.email}</a>
             <a href={contact.phoneHref}>{contact.phone}</a>
             <a href={contact.map} target="_blank" rel="noreferrer">{contact.address}</a>
           </address>
-          <ul className="footer__socials footer__list" aria-label="Social media">
+          <ul className={listStyle} aria-label="Social media">
             {socialLinks.map(({ href, label }) => <li key={href}><a href={href} target="_blank" rel="noreferrer">{label}</a></li>)}
           </ul>
         </div>
-        <div className="footer__bottom">
-          <Link className="footer__brand" to="/" aria-label="EATnaked home">EATnaked</Link>
-          <button className="footer__back-to-top" type="button" aria-label="Back to top" onClick={backToTop}><ArrowIcon /></button>
-          <p className="footer__copyright">© All rights reserved {new Date().getFullYear()}</p>
-          <nav className="footer__terms" aria-label="Legal navigation">
+        <div className="grid grid-cols-[1fr_auto] items-end gap-y-[min(7.5rem,7.5vh)] max-sm:mt-16 max-sm:grid-cols-1 max-sm:gap-0 max-sm:px-6">
+          <Link className="-ml-[0.012em] w-fit text-[19.58vw] leading-[0.8] font-medium tracking-[-0.055em] max-sm:mx-auto max-sm:text-[21vw]" to="/" aria-label="EATnaked home">EATnaked</Link>
+          <button className="-mb-4 grid aspect-square w-[min(16.6rem,16.6vh)] place-items-center rounded-full bg-accent transition-transform duration-600 ease-brand hover:scale-95 max-nav:w-36 max-sm:row-start-2 max-sm:mt-34 max-sm:mb-20 max-sm:w-40 max-sm:justify-self-end" type="button" aria-label="Back to top" onClick={backToTop}><ArrowIcon className="w-[46%] -rotate-90" /></button>
+          <p className="col-span-2 row-start-2 text-[2.3rem] font-medium max-nav:text-[1.4rem] max-sm:col-span-1 max-sm:row-start-4 max-sm:mt-12 max-sm:text-center">© All rights reserved {new Date().getFullYear()}</p>
+          <nav className="col-span-2 row-start-2 flex justify-self-end gap-40 text-[2.3rem] font-medium text-muted [&_a]:transition-colors [&_a:hover]:text-white max-nav:gap-12 max-nav:text-[1.4rem] max-sm:col-span-1 max-sm:row-start-3 max-sm:flex-col max-sm:justify-self-start max-sm:gap-[0.7rem] max-sm:px-6" aria-label="Legal navigation">
             <Link to="/terms">Terms and Conditions</Link>
             <Link to="/privacy-policy">Privacy Policy</Link>
           </nav>
         </div>
       </div>
-      <picture className="footer__background" aria-hidden="true">
+      <picture className="pointer-events-none absolute bottom-0 left-0 -z-10 h-160 w-full max-sm:h-3/5 [&_img]:size-full [&_img]:object-cover" aria-hidden="true">
         <source media="(max-width: 767px)" srcSet="/assets/images/footer-bg-portrait.avif" />
         <img src="/assets/images/footer-bg-landscape.avif" alt="" loading="lazy" />
       </picture>
