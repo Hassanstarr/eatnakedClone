@@ -17,9 +17,9 @@ export default function Footer() {
   const backToTop = () => window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
 
   return (
-    <footer className="site-footer relative isolate overflow-hidden">
-      <div className="flex flex-col gap-[min(13rem,13vh)] px-12 pt-[min(29.5rem,29.5vh)] pb-[min(4rem,4vh)] max-nav:pt-28 max-sm:gap-0 max-sm:px-0 max-sm:pt-[4.8rem] max-sm:pb-[2.8rem]">
-        <div className="grid grid-cols-[auto_auto_1fr_auto] gap-40 max-nav:grid-cols-2 max-nav:gap-16 max-sm:grid-cols-[1.4fr_1fr] max-sm:gap-x-8 max-sm:px-12">
+    <footer className="site-footer relative isolate mx-auto max-w-[calc(var(--page-max-width)+2*var(--page-gutter))] overflow-hidden">
+      <div className="page-container flex flex-col gap-52 pt-118 pb-16 max-nav:pt-28 max-sm:gap-0 max-sm:pt-[4.8rem] max-sm:pb-[2.8rem]">
+        <div className="grid grid-cols-[auto_auto_1fr_auto] gap-40 max-nav:grid-cols-2 max-nav:gap-16 max-sm:grid-cols-[1.4fr_1fr] max-sm:gap-x-8">
           <nav aria-label="Footer navigation"><ul className={navStyle}>
             {footerLinks.map(({ to, label }) => <li key={to}><NavLink to={to} end={to === '/'}>{label}</NavLink></li>)}
           </ul></nav>
@@ -36,17 +36,19 @@ export default function Footer() {
             {socialLinks.map(({ href, label }) => <li key={href}><a href={href} target="_blank" rel="noreferrer">{label}</a></li>)}
           </ul>
         </div>
-        <div className="grid grid-cols-[1fr_auto_auto] items-end gap-x-12 gap-y-[min(7.5rem,7.5vh)] max-lg:mt-16 max-lg:grid-cols-1 max-lg:gap-0 max-lg:px-6">
+        <div className="grid grid-cols-[1fr_auto_auto] items-end gap-x-12 gap-y-30 max-lg:mt-16 max-lg:grid-cols-1 max-lg:gap-0">
+          <div className="@container col-span-2 min-w-0 max-lg:col-span-1 max-lg:col-start-1 max-lg:row-start-3">
           <Link
-            className="col-span-2 ml-[-0.012em] w-fit text-[19.58vw] leading-[0.8] font-medium tracking-[0.01em] max-lg:col-span-1 max-lg:col-start-1 max-lg:row-start-3 max-lg:mx-auto max-lg:text-[18vw]"
+            className="block w-full text-[min(19cqw,280px)] leading-[0.8] font-medium tracking-[0.01em] max-lg:text-center"
             to="/"
             aria-label="EATnaked home"
           >
             EATnaked
           </Link>
+          </div>
 
           <button
-            className="col-start-3 -mb-4 grid aspect-square w-[min(16.6rem,16.6vh)] place-items-center justify-self-end rounded-full bg-accent transition-transform duration-600 ease-brand hover:scale-95 max-nav:w-36 max-lg:col-start-1 max-lg:row-start-2 max-lg:mt-12 max-lg:mb-20 max-lg:w-40"
+            className="col-start-3 -mb-4 grid aspect-square w-[16.6rem] place-items-center justify-self-end rounded-full bg-accent transition-transform duration-600 ease-brand hover:scale-95 max-nav:w-36 max-lg:col-start-1 max-lg:row-start-2 max-lg:mt-12 max-lg:mb-20"
             type="button"
             aria-label="Back to top"
             onClick={backToTop}
@@ -59,7 +61,7 @@ export default function Footer() {
           </p>
 
           <nav
-            className="col-span-2 col-start-2 row-start-2 grid grid-cols-subgrid text-[2.3rem] font-medium text-muted [&_a]:transition-colors [&_a:hover]:text-white max-nav:text-[1.4rem] max-lg:col-span-1 max-lg:col-start-1 max-lg:row-start-1 max-lg:flex max-lg:flex-col max-lg:items-start max-lg:gap-[0.7rem] max-lg:px-6"
+            className="col-span-2 col-start-2 row-start-2 grid grid-cols-subgrid text-[2.3rem] font-medium text-muted [&_a]:transition-colors [&_a:hover]:text-white max-nav:text-[1.4rem] max-lg:col-span-1 max-lg:col-start-1 max-lg:row-start-1 max-lg:flex max-lg:flex-col max-lg:items-start max-lg:gap-[0.7rem]"
             aria-label="Legal navigation"
           >
             <Link className="justify-self-end" to="/terms">
