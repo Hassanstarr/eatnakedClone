@@ -6,6 +6,8 @@ Changes flow through GitHub pull requests:
 feature/<section> -> production -> main
 ```
 
+Every merge must happen through a GitHub pull request, including syncing changes back into a feature branch. Never run a local `git merge`, a rebase, or a plain `git pull`. Use `git pull --ff-only` to download already-merged GitHub history without creating a local merge commit. If it fails, stop and resolve the divergence through a GitHub PR instead.
+
 - `main`: stable release branch and GitHub default branch.
 - `production`: integration branch where completed sections are combined and checked.
 - `feature/*`: isolated work for one page or shared section, starting from `production`.
@@ -61,8 +63,10 @@ Keep the working tree clean before switching branches. For an existing branch:
 ```bash
 git fetch origin
 git switch feature/home
-git merge origin/production
+git pull --ff-only origin feature/home
 ```
+
+If this branch needs changes from `production`, first use the sync PR instructions below.
 
 For a new task branch:
 
@@ -92,16 +96,19 @@ Stage the actual files you changed. Shared files such as App.jsx should be coord
 4. Review and verify the changes, then use Create a merge commit.
 5. Delete the merged feature branch on GitHub if the task is finished. Use a new task branch for later work.
 
-To bring another in-progress feature branch up to date after this merge:
+To bring another in-progress feature branch up to date after this merge, create a separate GitHub sync PR:
+
+1. Set base to `feature/about-us` and compare to `production`.
+2. Review and merge the sync PR on GitHub using Create a merge commit.
+3. Download that branch's updated history locally:
 
 ```bash
 git fetch origin
 git switch feature/about-us
-git merge origin/production
-git push -u origin HEAD
+git pull --ff-only origin feature/about-us
 ```
 
-If conflicts occur, edit the marked files, stage the resolved files, and commit the merge. Use `git merge --abort` if you need to cancel conflict resolution and return to the pre-merge state.
+Resolve supported conflicts in GitHub's PR conflict editor, review the result, and complete the PR there. If GitHub cannot resolve a complex conflict in its editor, stop and discuss a recovery approach; do not fall back to a local merge.
 
 ## Release production into main
 
