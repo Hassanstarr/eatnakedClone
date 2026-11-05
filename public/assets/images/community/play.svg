@@ -1,0 +1,73 @@
+<svg
+                        class="vimeo-player__btn-play-svg"
+                        width="100%"
+                        viewBox="0 0 246 246"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g data-figma-bg-blur-radius="57.4">
+                          <circle
+                            cx="123"
+                            cy="123"
+                            r="123"
+                            fill="white"
+                            fill-opacity="0.11"
+                          />
+                          <circle
+                            cx="123"
+                            cy="123"
+                            r="122.5"
+                            stroke="url(#paint0_linear_2397_5211)"
+                            stroke-opacity="0.13"
+                          />
+                        </g>
+                        <circle
+                          data-figma-bg-blur-radius="57.4"
+                          cx="123"
+                          cy="123"
+                          r="94"
+                          fill="white"
+                          fill-opacity="0.05"
+                        />
+                        <path
+                          d="M123 62C156.689 62 184 89.3106 184 123C184 156.689 156.689 184 123 184C89.3106 184 62 156.689 62 123C62 89.3106 89.3106 62 123 62ZM115.019 105.687C112.003 104.616 108.815 106.656 108.406 109.771C107.266 118.554 107.266 127.446 108.406 136.229C108.817 139.344 112.003 141.384 115.019 140.313L116.597 139.752C125.227 136.685 133.315 132.268 140.56 126.664C141.119 126.231 141.572 125.675 141.884 125.04C142.195 124.405 142.357 123.707 142.357 123C142.357 122.293 142.195 121.595 141.884 120.96C141.572 120.325 141.119 119.769 140.56 119.336C133.315 113.732 125.227 109.315 116.597 106.248L115.019 105.687Z"
+                          fill="white"
+                          fill-opacity="0.63"
+                        />
+                        <defs>
+                          <clipPath
+                            id="bgblur_0_2397_5211_clip_path"
+                            transform="translate(57.4 57.4)"
+                          >
+                            <circle
+                              cx="123"
+                              cy="123"
+                              r="123"
+                            />
+                          </clipPath>
+                          <clipPath
+                            id="bgblur_1_2397_5211_clip_path"
+                            transform="translate(28.4 28.4)"
+                          >
+                            <circle
+                              cx="123"
+                              cy="123"
+                              r="94"
+                            />
+                          </clipPath>
+                          <linearGradient
+                            id="paint0_linear_2397_5211"
+                            x1="123"
+                            y1="0"
+                            x2="123"
+                            y2="246"
+                            gradientUnits="userSpaceOnUse"
+                          >
+                            <stop stop-color="white" />
+                            <stop
+                              offset="1"
+                              stop-color="#999999"
+                            />
+                          </linearGradient>
+                        </defs>
+                      </svg>

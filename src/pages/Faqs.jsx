@@ -16,18 +16,18 @@ export default function Faqs() {
   const ref = useReveal();
 
   return (
-    <section ref={ref} className="relative isolate min-h-svh">
+    <section ref={ref} className="relative isolate">
       <img src="/assets/images/gradient-orange-FAQS.webp" alt="" className="pointer-events-none absolute top-[-5%] left-1/2 -z-10 h-160 w-full -translate-x-1/2 object-contain max-nav:object-cover" />
-      <div className="flex min-h-svh justify-between gap-12 px-[min(10rem,10vh)] pt-[min(25rem,25vh)] max-nav:flex-col max-nav:justify-start max-nav:gap-28 max-nav:px-[min(2.5rem,2.5vh)] max-nav:py-[min(15rem,15vh)]">
-        <div data-reveal className="sticky top-[20vh] flex h-fit shrink-0 flex-col gap-8 max-nav:static max-nav:items-center">
-          <h1 className="w-[min(75rem,75vh)] text-[min(10rem,10vh)] leading-none font-medium capitalize max-nav:max-w-full max-nav:w-[32.6rem] max-nav:text-center max-nav:text-[4rem] max-nav:leading-tight">Frequently <span className="text-accent">Asked</span> Questions</h1>
+      <div className="page-container grid min-h-[min(100svh,108rem)] grid-cols-2 items-start gap-32 pt-100 max-nav:grid-cols-1 max-nav:gap-28 max-nav:py-60">
+        <div data-reveal className="sticky top-72 flex min-w-0 flex-col gap-8 max-nav:static max-nav:items-center">
+          <h1 className="max-w-300 text-[10rem] leading-none font-medium capitalize max-nav:max-w-full max-nav:w-[32.6rem] max-nav:text-center max-nav:text-[4rem] max-nav:leading-tight">Frequently <span className="text-accent">Asked</span> Questions</h1>
           <p className="text-[1.8rem] leading-[1.28] max-nav:text-center max-nav:text-[1.4rem] max-nav:text-white/60">If you can't find your answers, live chat with us!</p>
         </div>
-        <ul data-reveal className="flex w-[min(80.4rem,80.4vh)] shrink-0 flex-col gap-8 max-nav:w-full">
+        <ul data-reveal className="flex min-w-0 flex-col gap-8">
           {questions.map(([question, answer, detail], index) => {
             const open = active === index;
             return (
-              <li key={question} className="relative isolate overflow-hidden rounded-[3rem] border border-[#99999935] bg-surface py-[min(2.9rem,2.9vh)] pr-[min(2.9rem,2.9vh)] pl-[min(3.9rem,3.9vh)] backdrop-blur-[189px] max-nav:rounded-3xl max-nav:py-[min(1.6rem,1.6vh)] max-nav:pr-[min(1.3rem,1.3vh)] max-nav:pl-[min(1.9rem,1.9vh)]">
+              <li key={question} className="relative isolate overflow-hidden rounded-[3rem] border border-[#99999935] bg-surface py-[2.9rem] pr-[2.9rem] pl-[3.9rem] backdrop-blur-[189px] max-nav:rounded-3xl max-nav:py-[1.6rem] max-nav:pr-[1.3rem] max-nav:pl-[1.9rem]">
                 <div className={`pointer-events-none absolute inset-0 -z-10 bg-linear-to-r from-white/5 from-45% to-accent/27 transition-opacity duration-800 ${open ? 'opacity-100' : 'opacity-0'}`} />
                 <h2>
                   <button id={`faq-question-${index}`} type="button" aria-expanded={open} aria-controls={`faq-answer-${index}`} onClick={() => setActive(open ? null : index)} className="group flex w-full items-center justify-between gap-[1em] text-left text-[2.5rem] font-medium capitalize max-nav:text-[1.8rem]">
@@ -40,7 +40,7 @@ export default function Faqs() {
                 </h2>
                 <div id={`faq-answer-${index}`} role="region" aria-labelledby={`faq-question-${index}`} aria-hidden={!open} inert={!open} className={`grid overflow-hidden transition-[grid-template-rows] duration-600 ease-brand ${open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
                   <div className="min-h-0 overflow-hidden">
-                    <p className="pt-[min(4.6rem,4.6vh)] pb-[min(3.9rem,3.9vh)] text-[1.8rem] leading-[1.28]">{answer}{detail && <span className="text-white/60"> {detail}</span>}</p>
+                    <p className="pt-[4.6rem] pb-[3.9rem] text-[1.8rem] leading-[1.28]">{answer}{detail && <span className="text-white/60"> {detail}</span>}</p>
                   </div>
                 </div>
               </li>

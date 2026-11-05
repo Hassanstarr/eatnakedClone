@@ -6,10 +6,10 @@ import { accountLinks, contact, pageLinks, primaryLinks, socialLinks } from './n
 
 function MenuLinks({ links, onNavigate }) {
   return (
-    <ul className="flex flex-col gap-[min(4rem,4vh)] max-nav:gap-10">
+    <ul className="flex flex-col gap-[4rem] max-nav:gap-10">
       {links.map(({ to, label, featured }) => (
         <li key={to}>
-          <NavLink to={to} end={to === '/'} onClick={onNavigate} className={`menu-link group/link flex w-fit -translate-x-22 items-center gap-6 text-[min(6rem,6vh)] leading-[0.95] font-medium transition duration-600 ease-brand hover:translate-x-0 hover:text-white focus-visible:translate-x-0 [&.active]:translate-x-0 [&.active]:text-white max-nav:-translate-x-14 max-nav:gap-4 max-nav:text-[3.5rem] max-sm:text-[clamp(2.7rem,7.6vw,3.5rem)] ${featured ? 'text-accent [&.active]:text-accent' : 'text-subtle'}`}>
+          <NavLink to={to} end={to === '/'} onClick={onNavigate} className={`menu-link group/link flex w-fit -translate-x-22 items-center gap-6 text-[6rem] leading-[0.95] font-medium transition duration-600 ease-brand hover:translate-x-0 hover:text-white focus-visible:translate-x-0 [&.active]:translate-x-0 [&.active]:text-white max-nav:-translate-x-14 max-nav:gap-4 max-nav:text-[3.5rem] max-sm:text-[clamp(2.7rem,7.6vw,3.5rem)] ${featured ? 'text-accent [&.active]:text-accent' : 'text-subtle'}`}>
             <ArrowIcon className="size-16 shrink-0 scale-0 rotate-45 opacity-0 transition duration-600 ease-brand group-hover/link:scale-100 group-hover/link:rotate-0 group-hover/link:opacity-100 group-focus-visible/link:scale-100 group-focus-visible/link:rotate-0 group-focus-visible/link:opacity-100 group-[.active]/link:scale-100 group-[.active]/link:rotate-0 group-[.active]/link:opacity-100 max-nav:size-10" />
             <span>{label}</span>
             {featured && <span className="self-start text-[2.5rem]" aria-hidden="true">♛</span>}
@@ -77,7 +77,8 @@ export default function Navbar() {
 
   return (
     <header ref={headerRef} data-open={open} className="group/nav fixed inset-x-0 top-0 z-50 isolate">
-      <div className={`relative flex min-h-50 items-center justify-between p-12 transition duration-600 ease-brand max-nav:min-h-36 max-nav:p-6 ${scrolled && !open ? 'bg-background/85 backdrop-blur-xl' : ''}`}>
+      <div className={`transition duration-600 ease-brand ${scrolled && !open ? 'bg-background/85 backdrop-blur-xl' : ''}`}>
+      <div className="chrome-container relative flex min-h-50 items-center justify-between py-12 max-nav:min-h-36 max-nav:py-6">
         <div className="flex items-center gap-18 max-nav:w-full max-nav:justify-between">
           <Link to="/" className="block h-26 transition-transform duration-600 ease-brand hover:scale-95 max-nav:h-16" aria-label="EATnaked home" onClick={closeMenu}>
             <img className="h-full w-auto object-contain" src="/assets/images/EATnaked.png" alt="EATnaked" width="200" height="65" />
@@ -100,9 +101,10 @@ export default function Navbar() {
           <OrderButton onClick={closeMenu} />
         </div>
       </div>
+      </div>
 
       <div id="site-menu" className={`fixed inset-0 -z-10 h-dvh overflow-y-auto overscroll-contain bg-background/94 backdrop-blur-[40px] transition-[opacity,visibility] duration-600 ease-brand max-nav:bg-background ${open ? 'visible opacity-100' : 'invisible opacity-0'}`} aria-hidden={!open} inert={!open} key={location.pathname}>
-        <nav className="grid min-h-full grid-cols-[1fr_1fr_auto] grid-rows-[1fr_auto] gap-24 px-[7vw] pt-[min(18rem,22vh)] pb-[min(10rem,10vh)] max-nav:grid-cols-2 max-nav:gap-16 max-nav:px-24 max-nav:pt-56 max-sm:flex max-sm:flex-col max-sm:gap-10 max-sm:px-14 max-sm:pt-44 max-sm:pb-16" aria-label="All pages">
+        <nav className="chrome-container grid min-h-full grid-cols-[1fr_1fr_auto] grid-rows-[1fr_auto] gap-24 pt-[18rem] pb-[10rem] max-nav:grid-cols-2 max-nav:gap-16 max-nav:pt-56 max-sm:flex max-sm:flex-col max-sm:gap-10 max-sm:pt-44 max-sm:pb-16" aria-label="All pages">
           <MenuLinks links={pageLinks} onNavigate={closeMenu} />
           <MenuLinks links={accountLinks} onNavigate={closeMenu} />
           <ul className="grid content-start gap-6 text-[2.3rem] [&_a:hover]:opacity-60 max-nav:hidden">
