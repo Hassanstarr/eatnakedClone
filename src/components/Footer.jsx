@@ -36,13 +36,39 @@ export default function Footer() {
             {socialLinks.map(({ href, label }) => <li key={href}><a href={href} target="_blank" rel="noreferrer">{label}</a></li>)}
           </ul>
         </div>
-        <div className="grid grid-cols-[1fr_auto] items-end gap-y-[min(7.5rem,7.5vh)] max-sm:mt-16 max-sm:grid-cols-1 max-sm:gap-0 max-sm:px-6">
-          <Link className="-ml-[0.012em] w-fit text-[19.58vw] leading-[0.8] font-medium tracking-[-0.055em] max-sm:mx-auto max-sm:text-[21vw]" to="/" aria-label="EATnaked home">EATnaked</Link>
-          <button className="-mb-4 grid aspect-square w-[min(16.6rem,16.6vh)] place-items-center rounded-full bg-accent transition-transform duration-600 ease-brand hover:scale-95 max-nav:w-36 max-sm:row-start-2 max-sm:mt-34 max-sm:mb-20 max-sm:w-40 max-sm:justify-self-end" type="button" aria-label="Back to top" onClick={backToTop}><ArrowIcon className="w-[46%] -rotate-90" /></button>
-          <p className="col-span-2 row-start-2 text-[2.3rem] font-medium max-nav:text-[1.4rem] max-sm:col-span-1 max-sm:row-start-4 max-sm:mt-12 max-sm:text-center">© All rights reserved {new Date().getFullYear()}</p>
-          <nav className="col-span-2 row-start-2 flex justify-self-end gap-40 text-[2.3rem] font-medium text-muted [&_a]:transition-colors [&_a:hover]:text-white max-nav:gap-12 max-nav:text-[1.4rem] max-sm:col-span-1 max-sm:row-start-3 max-sm:flex-col max-sm:justify-self-start max-sm:gap-[0.7rem] max-sm:px-6" aria-label="Legal navigation">
-            <Link to="/terms">Terms and Conditions</Link>
-            <Link to="/privacy-policy">Privacy Policy</Link>
+        <div className="grid grid-cols-[1fr_auto_auto] items-end gap-x-12 gap-y-[min(7.5rem,7.5vh)] max-lg:mt-16 max-lg:grid-cols-1 max-lg:gap-0 max-lg:px-6">
+          <Link
+            className="col-span-2 ml-[-0.012em] w-fit text-[19.58vw] leading-[0.8] font-medium tracking-[0.01em] max-lg:col-span-1 max-lg:col-start-1 max-lg:row-start-3 max-lg:mx-auto max-lg:text-[18vw]"
+            to="/"
+            aria-label="EATnaked home"
+          >
+            EATnaked
+          </Link>
+
+          <button
+            className="col-start-3 -mb-4 grid aspect-square w-[min(16.6rem,16.6vh)] place-items-center justify-self-end rounded-full bg-accent transition-transform duration-600 ease-brand hover:scale-95 max-nav:w-36 max-lg:col-start-1 max-lg:row-start-2 max-lg:mt-12 max-lg:mb-20 max-lg:w-40"
+            type="button"
+            aria-label="Back to top"
+            onClick={backToTop}
+          >
+            <ArrowIcon className="w-[46%] -rotate-90" />
+          </button>
+
+          <p className="col-start-1 row-start-2 text-[2.3rem] font-medium max-nav:text-[1.4rem] max-lg:row-start-4 max-lg:mt-12 max-lg:text-center">
+            © All rights reserved {new Date().getFullYear()}
+          </p>
+
+          <nav
+            className="col-span-2 col-start-2 row-start-2 grid grid-cols-subgrid text-[2.3rem] font-medium text-muted [&_a]:transition-colors [&_a:hover]:text-white max-nav:text-[1.4rem] max-lg:col-span-1 max-lg:col-start-1 max-lg:row-start-1 max-lg:flex max-lg:flex-col max-lg:items-start max-lg:gap-[0.7rem] max-lg:px-6"
+            aria-label="Legal navigation"
+          >
+            <Link className="justify-self-end" to="/terms">
+              Terms and Conditions
+            </Link>
+
+            <Link className="justify-self-end" to="/privacy-policy">
+              Privacy Policy
+            </Link>
           </nav>
         </div>
       </div>
