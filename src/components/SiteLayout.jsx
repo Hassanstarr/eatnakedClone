@@ -3,10 +3,27 @@ import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from './Navbar.jsx';
 import Footer from './Footer.jsx';
 
+const pageTitles = {
+  '/': 'EATnaked',
+  '/about-us': 'EATnaked | About Us',
+  '/faqs': 'EATnaked | FAQs',
+  '/community': 'EATnaked | Community',
+  '/our-menu': 'EATnaked | Our Menu',
+  '/customer-support': 'EATnaked | Customer Support',
+  '/login': 'EATnaked | Login',
+  '/register': 'Register | EATnaked',
+  '/forgot-password': 'EATnaked | Forgot Password',
+  '/terms': 'EATnaked | Terms and Conditions',
+  '/privacy-policy': 'EATnaked | Privacy Policy',
+  '/juice-naked': 'EATnaked | Juice Naked',
+  '/bowl-builder/meals': 'EATnaked | Pre-Set Meals'
+};
+
 export default function SiteLayout() {
   const { pathname } = useLocation();
 
   useEffect(() => {
+    document.title = pageTitles[pathname] ?? 'EATnaked | Page Not Found';
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [pathname]);
 
