@@ -11,6 +11,7 @@ import Terms from './pages/Terms.jsx';
 import PrivacyPolicy from './pages/PrivacyPolicy.jsx';
 import SiteLayout from './components/SiteLayout.jsx';
 import Faqs from './pages/Faqs.jsx';
+import JuiceNaked from './pages/JuiceNaked.jsx';
 
 export default function App() {
   return (
@@ -27,7 +28,7 @@ export default function App() {
       <Route path="/terms" element={<Terms />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path="/faqs" element={<Faqs />} />
-      <Route path="/juice-naked" element="JUICEnaked" />
+      <Route path="/juice-naked" element={<JuiceNaked />} />
       <Route path="/bowl-builder/meals" element="Bowl Builder" />
       <Route path="*" element="Not Found" />
       </Route>
