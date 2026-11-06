@@ -1,3 +1,5 @@
+import Login from './Login.jsx';
+
 export default function ForgotPassword() {
-  return 'Forgot Password';
+  return <Login recover />;
 }
