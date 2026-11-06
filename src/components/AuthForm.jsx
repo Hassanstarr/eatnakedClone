@@ -29,29 +29,32 @@ function FieldError({ name, error }) {
   return error && <p id={`${name}-error`} role="alert" className="mt-3 px-4 text-[1.4rem] leading-snug text-accent max-nav:text-[1.2rem]">{error}</p>;
 }
 
-export default function AuthForm({ register = false }) {
+export default function AuthForm({ register = false, recover = false }) {
   const [errors, setErrors] = useState({});
   const [visible, setVisible] = useState({});
-  const fields = register ? registerFields : [email, password];
+  const [submitted, setSubmitted] = useState(false);
+  const fields = register ? registerFields : recover ? [email] : [email, password];
   const change = ({ target }) => {
     if (!target.name) return;
+    setSubmitted(false);
     const next = { [target.name]: validate(target) };
     if (target.name === 'password' && 'confirm_password' in errors) next.confirm_password = validate(target.form.elements.namedItem('confirm_password'));
     setErrors((previous) => ({ ...previous, ...next }));
   };
   const submit = (event) => {
     event.preventDefault();
+    setSubmitted(false);
     const form = event.currentTarget;
     const controls = [...form.elements].filter((field) => field.name);
     const next = Object.fromEntries(controls.map((field) => [field.name, validate(field)]));
     setErrors(next);
     const invalid = controls.find((field) => next[field.name]);
     if (invalid) invalid.focus();
-    else { form.reset(); setErrors({}); setVisible({}); }
+    else { form.reset(); setErrors({}); setVisible({}); setSubmitted(recover); }
   };
 
   return (
-    <form noValidate onSubmit={submit} onChange={change} className={`grid w-full min-w-0 ${register ? 'gap-4' : 'gap-8'}`}>
+    <form noValidate onSubmit={submit} onChange={change} className={`grid w-full min-w-0 grid-cols-1 ${register ? 'gap-4' : 'gap-8'}`}>
       {fields.map(({ name, label, type = 'text', ...attributes }) => <div key={name} className="min-w-0">
         <div className={`flex items-center rounded-full backdrop-blur-[14px] transition-colors focus-within:ring-1 focus-within:ring-accent ${register ? 'bg-white/14' : 'bg-white/7'}`}>
           <label className="min-w-0 flex-1">
@@ -71,8 +74,10 @@ export default function AuthForm({ register = false }) {
         </label>
         <FieldError name="phone_agreement" error={errors.phone_agreement} />
       </div>}
-      <OrderButton type="submit" accent className={`justify-self-center [&>span:last-child]:flex-1 [&>span:last-child]:text-center ${register ? 'mt-8 min-w-100 max-nav:mt-20 max-nav:min-w-80' : 'mt-[3.4rem] mb-[3.4rem] max-nav:w-[19.7rem]'}`}>{register ? 'Let’s Go!' : 'Login'}</OrderButton>
+      {!register && !recover && <Link to="/forgot-password" className="px-[2.7rem] text-[1.8rem] font-medium text-accent underline-offset-8 hover:underline max-nav:px-8 max-nav:text-[1.4rem]">Forgot Password?</Link>}
+      <OrderButton type="submit" accent className={`justify-self-center [&>span:last-child]:flex-1 [&>span:last-child]:text-center ${register ? 'mt-8 min-w-100 max-nav:mt-20 max-nav:min-w-80' : 'mt-[3.4rem] mb-[3.4rem] max-nav:w-[19.7rem]'}`}>{register ? 'Let’s Go!' : recover ? 'Send' : 'Login'}</OrderButton>
       {!register && <p className="flex justify-center gap-3 text-[1.8rem] font-medium max-nav:text-[1.4rem]">No account?<Link to="/register" className="text-accent underline-offset-8 hover:underline">Register</Link></p>}
+      {submitted && <p role="status" className="w-max justify-self-center text-center text-[2.4rem] leading-normal whitespace-nowrap text-white max-nav:text-[1.8rem]">If an account exists with this email,<br className="hidden max-nav:block" />{' '}a password reset link has been sent.</p>}
     </form>
   );
 }

@@ -9,6 +9,16 @@ dist/
 /test-results/
 /playwright-report/
 /.nyc_output/
+/test/
+/tests/
+**/__tests__/
+*.test.*
+*.spec.*
+/playwright.config.*
+/vitest.config.*
+/jest.config.*
+/scripts/test-*
+/scripts/test_*
 
 *.log
 *.tmp

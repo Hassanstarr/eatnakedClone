@@ -15,7 +15,7 @@ const vegetables = [
   'size-24 top-160 right-44 blur-[7.5px] max-nav:top-168 max-nav:-right-12 max-nav:size-20',
 ];
 
-export default function Login() {
+export default function Login({ recover = false }) {
   const ref = useReveal();
   return (
     <section ref={ref} className="page-container relative isolate min-h-svh pt-[min(25rem,25svh)] pb-20 max-nav:pt-60 max-nav:pb-32">
@@ -23,9 +23,9 @@ export default function Login() {
         {vegetables.map((position, index) => <img data-reveal key={position} src={`/assets/images/login/veg-${index + 1}.png`} alt="" className={`absolute object-contain ${position}`} />)}
       </div>
       <div className="flex flex-col items-center">
-        <span data-reveal className="mb-[0.6rem] flex h-[4.1rem] w-[10.4rem] items-center justify-center gap-[1.3rem] rounded-full border-[0.5px] border-white/57 text-[1.8rem] font-medium backdrop-blur-[14px] max-nav:mb-[1.3rem] max-nav:h-[3.2rem] max-nav:w-[7.4rem] max-nav:gap-[0.4rem] max-nav:text-[1.2rem]"><span className="size-[0.4rem] rounded-full bg-white" />Login</span>
-        <h1 data-reveal className="mb-[4.4rem] max-w-full text-center text-[10rem] leading-none font-medium capitalize max-nav:w-[28.1rem] max-nav:text-[4rem]">Welcome back!</h1>
-        <div data-reveal className="w-[46rem] max-w-full max-nav:w-[29.7rem]"><AuthForm /></div>
+        {!recover && <span data-reveal className="mb-[0.6rem] flex h-[4.1rem] w-[10.4rem] items-center justify-center gap-[1.3rem] rounded-full border-[0.5px] border-white/57 text-[1.8rem] font-medium backdrop-blur-[14px] max-nav:mb-[1.3rem] max-nav:h-[3.2rem] max-nav:w-[7.4rem] max-nav:gap-[0.4rem] max-nav:text-[1.2rem]"><span className="size-[0.4rem] rounded-full bg-white" />Login</span>}
+        <h1 data-reveal className="mb-[4.4rem] w-[88.6rem] max-w-full text-center text-[10rem] leading-none font-medium capitalize max-nav:w-[28.1rem] max-nav:text-[4rem]">{recover ? 'Recover your password' : 'Welcome back!'}</h1>
+        <div data-reveal className="w-[46rem] max-w-full max-nav:w-[29.7rem]"><AuthForm recover={recover} /></div>
       </div>
     </section>
   );
