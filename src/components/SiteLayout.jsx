@@ -35,7 +35,7 @@ export default function SiteLayout() {
       </picture>
       <a className="fixed top-8 left-12 z-100 translate-y-[-200%] rounded-full bg-accent px-8 py-6 focus:translate-y-0" href="#main-content">Skip to content</a>
       <Navbar />
-      <main id="main-content" className={['/about-us', '/faqs', '/community', '/customer-support', '/login', '/register', '/forgot-password', '/juice-naked', '/our-menu'].includes(pathname) ? 'overflow-clip focus:outline-none' : 'page-container min-h-[40vh] pt-74 pb-24 focus:outline-none max-nav:pt-60'} tabIndex={-1}><Outlet /></main>
+      <main id="main-content" className={['/', '/about-us', '/faqs', '/community', '/customer-support', '/login', '/register', '/forgot-password', '/juice-naked', '/our-menu'].includes(pathname) ? 'overflow-clip focus:outline-none' : 'page-container min-h-[40vh] pt-74 pb-24 focus:outline-none max-nav:pt-60'} tabIndex={-1}><Outlet /></main>
       {pathname !== '/register' && <Footer />}
     </>
   );
