@@ -13,7 +13,10 @@
   --color-background: #0b0b0b;
   --color-surface: #151515;
   --color-menu-card: #252525;
+  --color-goal-card: #1e1e1e;
   --color-accent: #f4783e;
+  --color-accent-soft: #ffa783;
+  --background-image-goal-glow: radial-gradient(ellipse at 50% 100%, color-mix(in srgb, var(--color-accent) 45%, transparent), transparent 70%);
   --color-green: #2b6b22;
   --color-muted: #ffffff80;
   --color-subtle: #ffffff4d;
