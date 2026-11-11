@@ -1,9 +1,10 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ArrowIcon from '../components/ArrowIcon.jsx';
 import OrderButton from '../components/OrderButton.jsx';
 import Showreel from '../components/Showreel.jsx';
 import useReveal from '../hooks/useReveal.js';
+import useScrollFrames from '../hooks/useScrollFrames.js';
 import testimonials from '../data/testimonials.json';
 
 const image = (file) => `/assets/images/${file}`;
@@ -19,11 +20,95 @@ const bowls = [
   { name: 'Lemon Herb Garlic Chicken w/ Organic Quinoa and Grilled Asparagus', photo: 'bowl-1.avif', tags: [['Veggies', 'hero-vegetables.png'], ['Protein', 'bowl-proteins.png'], ['Grains', 'bowl-grains.png'], ['Asparagus', 'bowl-asparagus.png'], ['Chicken', 'bowl-proteins.png'], ['Veggies', 'hero-vegetables.png']] },
   { name: 'Southwest Bean & Quinoa Salad', photo: 'bowl-2.avif', tags: [['Fruit', 'bowl-fruit.png'], ['Herbs', 'bowl-herbs.png'], ['Sauce', 'bowl-sauce.png'], ['Herbs', 'bowl-herbs.png'], ['CousCous', 'bowl-couscous.png'], ['Olives', 'bowl-olives.png']] },
 ];
+const qualityScenes = [
+  { tag: 'Fresh & High Quality Ingredients', title: 'From our kitchen', name: 'kitchen' },
+  { tag: 'For An Incredible Healthy Life', title: 'To your table', name: 'table' },
+];
+const partnerStops = [[0, 0], [.03, 0], [.18, 60], [.3, 60], [.5, 110], [.6, 110], [.8, 160], [1, 200]];
+
+function portion(progress, start, end) {
+  return Math.min(1, Math.max(0, (progress - start) / (end - start)));
+}
+
+function partnerFrame(progress, count, portrait) {
+  if (portrait) return Math.round(progress * (count - 1));
+  const index = partnerStops.findIndex(([stop], i) => i > 0 && progress <= stop);
+  const [start, first] = partnerStops[index - 1];
+  const [end, last] = partnerStops[index];
+  return Math.round(first + (last - first) * portion(progress, start, end));
+}
 
 function Controls({ label, onMove, side = false }) {
   return <div className={`flex gap-4 ${side ? 'pointer-events-none absolute inset-x-0 top-[80%] z-20 -translate-y-1/2 justify-between' : 'justify-center'}`}>
     {[-1, 1].map(direction => <button key={direction} type="button" aria-label={`${direction < 0 ? 'Previous' : 'Next'} ${label}`} onClick={() => onMove(direction)} className={`group pointer-events-auto grid place-items-center rounded-full border border-white/10 bg-white/10 backdrop-blur-md transition-colors duration-500 hover:bg-accent/40 ${side ? 'size-32 max-nav:size-16' : 'size-24 max-nav:size-18'}`}><ArrowIcon className={`w-10 transition-transform duration-500 group-hover:scale-110 max-nav:w-8 ${direction < 0 ? 'rotate-180' : ''}`} /></button>)}
   </div>;
+}
+
+function ScenePicture({ frame, desktop, mobile, alt = '', className = '' }) {
+  return <picture className={`pointer-events-none absolute inset-0 ${className}`}>
+    {!frame && <source media="(max-width: 1023px)" srcSet={image(mobile)} />}
+    <img src={frame || image(desktop)} alt={alt} loading={frame ? 'eager' : 'lazy'} className="size-full object-cover" />
+  </picture>;
+}
+
+function Partners() {
+  const { trackRef, stageRef, progress, frame } = useScrollFrames('partners', 201, 'avif', partnerFrame);
+  const stage = progress >= .94 ? 3 : progress >= .73 ? 2 : progress >= .4 ? 1 : 0;
+  const [selection, setSelection] = useState(null);
+  const index = selection?.stage === stage ? selection.index : stage;
+  const [name, logo, description] = partners[index];
+
+  return <section ref={trackRef} className="relative mx-auto max-w-[192rem] motion-safe:h-[400svh]" aria-labelledby="partners-title">
+    <div ref={stageRef} className="relative isolate flex items-center overflow-hidden motion-safe:sticky motion-safe:top-0 motion-safe:h-svh">
+      <ScenePicture frame={frame} desktop="partners-background.avif" mobile="partners-background-mobile.avif" className="-z-10" />
+      <div className="page-container grid grid-cols-[1fr_1.2fr] items-center gap-24 py-40 max-nav:grid-cols-1 max-nav:gap-16 max-nav:py-24">
+        <h2 id="partners-title" className={`${heading} max-nav:text-center`}>Reputable partners That EATnaked</h2>
+        <div className="mx-auto w-full max-w-220">
+          <div className="mb-10 rounded-[2rem] border border-outline bg-white/11 px-16 py-16 backdrop-blur-xl max-nav:px-10">
+            <span className="mb-8 inline-flex rounded-full border border-white/30 px-8 py-4 text-[1.8rem] max-nav:text-[1.4rem]">Partners</span>
+            <div className="mb-6 flex items-center gap-5">
+              <img src={image(logo)} alt="" loading="lazy" className="max-h-20 max-w-40 object-contain" />
+              <h3 className="text-[5rem] leading-none font-medium max-nav:text-[3.6rem]">{name}</h3>
+            </div>
+            <p className="text-[1.8rem] text-white/50 max-nav:text-[1.4rem]">{description}</p>
+          </div>
+          <Controls label="partner" onMove={direction => setSelection({ stage, index: (index + direction + partners.length) % partners.length })} />
+        </div>
+      </div>
+    </div>
+  </section>;
+}
+
+function QualityCaption({ scene, opacity = 1, offset = 0 }) {
+  return <div aria-hidden={opacity === 0} className="page-container col-start-1 row-start-1 flex flex-col items-center gap-4 text-center max-nav:gap-6" style={{ opacity, transform: `translateY(${offset}px)` }}>
+    <p className="w-fit rounded-full border border-white/30 px-9 py-5 text-[1.8rem] backdrop-blur-sm max-nav:px-6 max-nav:py-4 max-nav:text-[1.2rem]">{scene.tag}</p>
+    <h2 className="text-[12rem] leading-[.9] font-medium capitalize max-nav:text-[6rem] max-nav:leading-none">{scene.title}</h2>
+  </div>;
+}
+
+function Quality() {
+  const { trackRef, stageRef, progress, frame } = useScrollFrames('bag', 40, 'webp');
+  const first = portion(progress, .13, .33);
+  const last = portion(progress, .7, .9);
+  const captionPosition = 'grid content-start pt-[min(19rem,19vh)] max-nav:pt-[min(13.5rem,13.5vh)]';
+
+  return <section className="mx-auto max-w-[192rem]" aria-label="From our kitchen to your table">
+    <div ref={trackRef} className="relative h-[200svh] motion-reduce:hidden">
+      <div ref={stageRef} className={`sticky top-0 isolate h-svh overflow-hidden ${captionPosition}`}>
+        <ScenePicture desktop="quality.avif" mobile="quality-portrait.avif" className="-z-20" />
+        <ScenePicture frame={frame} desktop="quality-kitchen-bag.webp" mobile="quality-kitchen-bag-mobile.webp" alt="EATnaked shopping bag" className="-z-10" />
+        <QualityCaption scene={qualityScenes[0]} opacity={1 - first} offset={-60 * first} />
+        <QualityCaption scene={qualityScenes[1]} opacity={last} offset={60 * (1 - last)} />
+      </div>
+    </div>
+    <div className="hidden motion-reduce:block">
+      {qualityScenes.map(scene => <article key={scene.name} className={`relative isolate min-h-[max(100svh,70rem)] overflow-hidden ${captionPosition}`}>
+        <ScenePicture desktop="quality.avif" mobile="quality-portrait.avif" className="-z-20" />
+        <ScenePicture desktop={`quality-${scene.name}-bag.webp`} mobile={`quality-${scene.name}-bag-mobile.webp`} alt="EATnaked shopping bag" className="-z-10" />
+        <QualityCaption scene={scene} />
+      </article>)}
+    </div>
+  </section>;
 }
 
 function FoodTag({ name, file, className = '' }) {
@@ -69,13 +154,37 @@ function Testimonials() {
 
 export default function Home() {
   const ref = useReveal();
+  const deliveryVideo = useRef(null);
   const [lifestyle, setLifestyle] = useState(0);
   const [bowl, setBowl] = useState(0);
-  const [partner, setPartner] = useState(0);
   const swipe = useRef(null);
   const nextLifestyle = direction => setLifestyle(value => (value + direction + lifestyles.length) % lifestyles.length);
   const nextBowl = direction => setBowl(value => (value + direction + bowls.length) % bowls.length);
   const swipeProps = move => ({ onPointerDown: event => { swipe.current = event.clientX; }, onPointerUp: event => { if (swipe.current !== null && Math.abs(event.clientX - swipe.current) > 40) move(event.clientX < swipe.current ? 1 : -1); swipe.current = null; }, onPointerCancel: () => { swipe.current = null; } });
+
+  useEffect(() => {
+    const video = deliveryVideo.current;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let visible = false;
+    const syncPlayback = () => {
+      if (visible && !reduced.matches) video.play().catch(() => {});
+      else {
+        video.pause();
+        video.currentTime = 0;
+      }
+    };
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      syncPlayback();
+    });
+    observer.observe(video);
+    reduced.addEventListener('change', syncPlayback);
+    return () => {
+      observer.disconnect();
+      reduced.removeEventListener('change', syncPlayback);
+      video.pause();
+    };
+  }, []);
 
   return <div ref={ref}>
     <section className="relative isolate min-h-svh overflow-hidden bg-black">
@@ -101,7 +210,7 @@ export default function Home() {
     </section>
 
     <section className="relative isolate min-h-[max(100svh,50rem)] overflow-hidden bg-black" aria-labelledby="delivered-title">
-      <video autoPlay muted loop playsInline preload="metadata" aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 size-full object-cover"><source src="/assets/videos/delivered-showreel-portrait.mp4" media="(max-width: 1023px)" type="video/mp4" /><source src="/assets/videos/delivered-showreel-landscape.mp4" type="video/mp4" /></video>
+      <video ref={deliveryVideo} muted playsInline preload="metadata" aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 size-full object-cover"><source src="/assets/videos/delivered-showreel-portrait.mp4" media="(max-width: 1023px)" type="video/mp4" /><source src="/assets/videos/delivered-showreel-landscape.mp4" type="video/mp4" /></video>
       <div className="page-container flex min-h-[max(100svh,50rem)] flex-col justify-between pt-52 pb-12 max-nav:pt-22">
         <h2 data-reveal id="delivered-title" className={`${heading} mx-auto max-w-[70rem] text-center max-nav:max-w-[38rem]`}>Homemade Meals, Delivered Daily</h2>
         <div data-reveal className="w-[24.3rem] max-w-full rounded-[2rem] border border-outline bg-white/11 p-12 backdrop-blur-[28px] max-nav:w-[22rem]"><img src={image('delivered-fresh.svg')} alt="" className="mb-6 size-12" /><h3 className="mb-6 max-w-[70%] text-[2rem] leading-none font-medium max-nav:text-[1.8rem]">Fresh, Never Frozen</h3><p className="text-[1.8rem] leading-tight text-white/50 max-nav:text-[1.4rem]">Streamlined deliveries that accommodate YOUR lifestyle.</p></div>
@@ -110,17 +219,7 @@ export default function Home() {
 
     <Goals />
 
-    <section className="relative isolate mx-auto max-w-[192rem] overflow-hidden" aria-labelledby="partners-title">
-      <picture aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10"><source media="(max-width: 1023px)" srcSet={image('partners-background-mobile.avif')} /><img src={image('partners-background.avif')} alt="" loading="lazy" className="size-full object-cover" /></picture>
-      <div className="page-container grid grid-cols-[1fr_1.2fr] items-center gap-24 py-40 max-nav:grid-cols-1 max-nav:gap-16 max-nav:py-24">
-      <h2 data-reveal id="partners-title" className={`${heading} max-nav:text-center`}>Reputable partners That EATnaked</h2>
-      <div data-reveal className="mx-auto w-full max-w-220">
-        <div className="mb-10 rounded-[2rem] border border-outline bg-white/11 px-16 py-16 backdrop-blur-xl max-nav:px-10"><span className="mb-8 inline-flex rounded-full border border-white/30 px-8 py-4 text-[1.8rem] max-nav:text-[1.4rem]">Partners</span><div className="mb-6 flex items-center gap-5"><img src={image(partners[partner][1])} alt="" loading="lazy" className="max-h-20 max-w-40 object-contain" /><h3 className="text-[5rem] leading-none font-medium max-nav:text-[3.6rem]">{partners[partner][0]}</h3></div><p className="text-[1.8rem] text-white/50 max-nav:text-[1.4rem]">{partners[partner][2]}</p></div>
-        <Controls label="partner" onMove={direction => setPartner(value => (value + direction + partners.length) % partners.length)} />
-        <p className="sr-only" aria-live="polite">{partners[partner][0]}</p>
-      </div>
-      </div>
-    </section>
+    <Partners />
 
     <section className="page-container py-60 max-nav:py-32" aria-labelledby="lifestyle-title">
       <div data-reveal role="region" aria-roledescription="carousel" aria-label="Meals for your lifestyle" className="relative isolate mx-auto h-[49.7rem] w-full max-w-[140rem] touch-pan-y max-nav:h-[40rem]" {...swipeProps(nextLifestyle)}>
@@ -152,13 +251,7 @@ export default function Home() {
       <div data-reveal><Showreel videoId="1129496694" label="kitchen showreel" /></div>
     </section>
 
-    <section className="mx-auto max-w-[192rem]" aria-label="From our kitchen to your table">
-      {[['Fresh & High Quality Ingredients', 'From our kitchen', 'kitchen'], ['For An Incredible Healthy Life', 'To your table', 'table']].map(([tag, title, scene]) => <article key={scene} className="relative isolate min-h-[max(100svh,70rem)] overflow-hidden">
-        <picture aria-hidden="true" className="pointer-events-none absolute inset-0 -z-20"><source media="(max-width: 1023px)" srcSet={image('quality-portrait.avif')} /><img src={image('quality.avif')} alt="" loading="lazy" className="size-full object-cover" /></picture>
-        <picture className="pointer-events-none absolute inset-0 -z-10"><source media="(max-width: 1023px)" srcSet={image(`quality-${scene}-bag-mobile.webp`)} /><img src={image(`quality-${scene}-bag.webp`)} alt={`EATnaked shopping bag ${scene === 'kitchen' ? 'ready in the kitchen' : 'delivered to your table'}`} loading="lazy" className="size-full object-cover" /></picture>
-        <div data-reveal className="page-container flex flex-col items-center gap-4 pt-[min(19rem,19vh)] text-center max-nav:gap-6 max-nav:pt-[min(13.5rem,13.5vh)]"><p className="w-fit rounded-full border border-white/30 px-9 py-5 text-[1.8rem] backdrop-blur-sm max-nav:px-6 max-nav:py-4 max-nav:text-[1.2rem]">{tag}</p><h2 className="text-[12rem] leading-[.9] font-medium capitalize max-nav:text-[6rem] max-nav:leading-none">{title}</h2></div>
-      </article>)}
-    </section>
+    <Quality />
 
     <section className="relative isolate overflow-hidden pt-[29rem] pb-40 max-nav:pt-60 max-nav:pb-12" aria-labelledby="join-title">
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-[65rem] max-w-[182.4rem] max-nav:h-[45rem]">{[[1, 'top-[35%] left-[3%] w-60 blur-[5px]'], [2, 'top-[10%] left-[12%] w-58'], [3, 'top-[55%] left-[10%] w-88'], [5, 'top-[15%] left-[30%] w-44 blur-[5px]'], [7, 'top-[5%] right-[38%] w-36'], [9, 'top-[10%] right-[8%] w-90'], [10, 'top-[65%] right-[10%] w-104']].map(([number, position]) => <img key={number} src={image(`veg-${number}.png`)} alt="" loading="lazy" className={`absolute object-contain opacity-80 motion-safe:animate-float max-nav:scale-50 ${position}`} />)}</div>
